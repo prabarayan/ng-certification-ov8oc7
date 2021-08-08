@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">5 Day Extended Forecast for {{forecastData.city.name }} {{pincode}}</h3>
+      <h3 class="panel-title">5 Days Extended Forecast for {{forecastData.city.name }} ({{pincode}})</h3>
 
     </div>
     <div *ngIf="isSpinner" class="d-flex justify-content-center">
@@ -21,5 +21,6 @@
       </li>
     </ul>
   </div>
-  <button class="btn btn-success" tabindex="0" id="mainPageBtn" (click)="goBackWeather()">&lt; Back to main page</button>
+  <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" (click)="goBackWeather()">Back to
+    Weather page</a>
 </div>

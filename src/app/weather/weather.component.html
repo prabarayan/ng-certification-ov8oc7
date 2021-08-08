@@ -28,7 +28,7 @@
       <div>
         <h3>{{weatherData.data.name}}</h3>
         <h4 *ngIf="weatherData">Current conditions: {{weatherData.data.weather[0].main}}</h4>
-        <h4>Temperatures: {{weatherData.data.main.temp|round}} <span>&#8451;</span></h4>
+        <p>Temperatures: {{weatherData.data.main.temp|round}} <span>&#8451;</span></p>
         <p>Feels Like: {{weatherData.data.main.feels_like|round}} <span>&#8451;</span></p>
 
         <p> Min Today: {{weatherData.data.main.temp_min|round}} <span>&#8451;</span></p>
@@ -36,7 +36,8 @@
 
         <p>Humidity: {{weatherData.data.main.humidity}} %</p>
         <p>
-          <a href="{{weatherData.forecastLink}}">Show 5-day forecast for {{weatherData.data.name}}</a>
+          <a href="{{weatherData.forecastLink}}">Click here for Forecast
+            Details <span style="font-weight:600;">{{weatherData.data.name}}</span></a>
         </p>
       </div>
       <div>
