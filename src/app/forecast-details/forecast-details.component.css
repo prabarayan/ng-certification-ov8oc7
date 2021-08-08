@@ -6,3 +6,8 @@ h4.title {
   text-align: center;
   color: #337ab7;
 }
+.date-section {
+  width: 107px !important;
+  display: inline-block;
+  font-weight: 600;
+}

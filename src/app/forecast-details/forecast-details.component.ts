@@ -9,8 +9,8 @@ import { WeatherService } from './../service/weather.service';
 })
 export class ForecastComponent implements OnInit {
   pincode: string = '';
-  forecastData = { city: '', cod: '', message: 0, cnt: 40, list: [] };
-
+  forecastData: any = { list: [], city: '' };
+  isSpinner: boolean = false;
   baseWeatherImgPath: string;
   weatherImg: any;
 
@@ -34,18 +34,16 @@ export class ForecastComponent implements OnInit {
   goBackWeather() {
     this.router.navigateByUrl('');
   }
-  dateConverter(miliseconds) {
-    return new Date(miliseconds * 1000);
-  }
   addForecastData(pincode) {
+    this.isSpinner = true;
     this.ws.getForcastData(pincode).subscribe(
       result => {
         console.log(this.pincode);
         this.forecastData = result;
+        this.isSpinner = false;
       },
       error => {
         console.log('error', error);
-        alert('Data  not found try with other Pincode');
       }
     );
   }

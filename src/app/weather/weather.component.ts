@@ -7,21 +7,20 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent implements OnInit {
-  isSpinner = false;
-  weatherData = { zipcode: '', data: '', forecastLink: '', icon: '' };
-  weatherDataArray: any[] = [];
-
+  isSpinner: boolean = false;
+  weatherData: any = { zipcode: '', data: '', forecastLink: '', icon: '' };
+  weatherDataResults: any[] = [];
   baseWeatherImgPath: string;
   weatherImg: any;
 
-  constructor(private ws: WeatherService) {
-    this.baseWeatherImgPath = this.ws.getBaseWhetherImgPath();
-    this.weatherImg = this.ws.getWeatherImgs();
+  constructor(private weatherService: WeatherService) {
+    this.baseWeatherImgPath = this.weatherService.getBaseWhetherImgPath();
+    this.weatherImg = this.weatherService.getWeatherImgs();
   }
 
   ngOnInit() {
     let weatherData = JSON.parse(localStorage.getItem('weatherData'));
-    this.weatherDataArray = weatherData || [];
+    this.weatherDataResults = weatherData || [];
   }
 
   weatherForm = new FormGroup({
@@ -41,37 +40,36 @@ export class WeatherComponent implements OnInit {
     this.weatherForm.reset();
   }
   getWeatherData(zipcode) {
-    this.ws.weatherDataByPincode(zipcode).subscribe(
+    this.weatherService.weatherDataByPincode(zipcode).subscribe(
       result => {
         this.isSpinner = false;
         this.weatherData.data = result;
         this.weatherData.zipcode = zipcode;
         this.weatherData.forecastLink =
           'forecast-details/' + this.weatherData.zipcode;
-        console.log(this.weatherData.data);
         if (this.weatherData.data != null && this.weatherData.data != '') {
           let index = this.findById(this.weatherData.zipcode);
           if (index != -1) {
-            this.weatherDataArray[index].zipcode = this.weatherData.zipcode;
-            this.weatherDataArray[index].data = this.weatherData.data;
+            this.weatherDataResults[index].zipcode = this.weatherData.zipcode;
+            this.weatherDataResults[index].data = this.weatherData.data;
             localStorage.setItem(
               'weatherData',
-              JSON.stringify(this.weatherDataArray)
+              JSON.stringify(this.weatherDataResults)
             );
           } else {
             this.weatherData.forecastLink =
               'forecast-details/' + this.weatherData.zipcode;
-            this.weatherDataArray.push(
+            this.weatherDataResults.push(
               JSON.parse(JSON.stringify(this.weatherData))
             );
             localStorage.setItem(
               'weatherData',
-              JSON.stringify(this.weatherDataArray)
+              JSON.stringify(this.weatherDataResults)
             );
           }
         } else {
           alert(
-            'weather Data not found for given zipcode, try with other zipcode'
+            'weather Result not available for given zipcode, try with other zipcode'
           );
         }
       },
@@ -79,22 +77,25 @@ export class WeatherComponent implements OnInit {
         console.log('error', error);
         this.isSpinner = true;
         alert(
-          'weather Data not found for given zipcode, try with other zipcode'
+          'weather Result not available for given zipcode, try with other zipcode'
         );
       }
     );
   }
   findById(zipcode: any) {
-    let index = this.weatherDataArray.findIndex(obj => obj.zipcode == zipcode);
+    let index = this.weatherDataResults.findIndex(
+      obj => obj.zipcode == zipcode
+    );
     return index;
   }
   clearWeatherData() {
-    this.weatherData.data = '';
-    this.weatherData.zipcode = '';
-    this.weatherData.forecastLink = '';
+    this.weatherData = { zipcode: '', data: '', forecastLink: '', icon: '' };
   }
   deleteCity(index) {
-    this.weatherDataArray.splice(index, 1);
-    localStorage.setItem('weatherData', JSON.stringify(this.weatherDataArray));
+    this.weatherDataResults.splice(index, 1);
+    localStorage.setItem(
+      'weatherData',
+      JSON.stringify(this.weatherDataResults)
+    );
   }
 }

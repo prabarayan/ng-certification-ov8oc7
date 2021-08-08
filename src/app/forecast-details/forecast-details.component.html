@@ -1,22 +1,23 @@
-<h4 class="title">Forecast page:</h4>
+<h4 class="title">Forecast</h4>
 <div class="container-fluid">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">5-day forecast for {{forecastData.city.name }} {{pincode}}</h3>
+      <h3 class="panel-title">5 Day Extended Forecast for {{forecastData.city.name }} {{pincode}}</h3>
 
+    </div>
+    <div *ngIf="isSpinner" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </div>
     <ul class="list-group" *ngFor="let foreCastData of forecastData.list; let i = index">
       <!---->
       <li class="list-group-item">
-        {{(foreCastData.dt | dateChange | date:'fullDate')}}
-
-        - Min: {{foreCastData.temp.min|round}} <span>&#8451;</span>
-        - Max: {{foreCastData.temp.max|round}} <span>&#8451;</span>
-
-        <span class="iconSpac" style="margin-left: 50px;"> {{foreCastData.weather[0].main}}
-        <img class ="wIcon" *ngIf="weatherImg[foreCastData.weather[0].main]" src="{{baseWeatherImgPath + weatherImg[foreCastData.weather[0].main]}}">
-
-      </span>
+        <span class="date-section">{{(foreCastData.dt | dateChange | date:'fullDate')}}</span>
+        <span class="iconSpac" style="margin-left: 80px;">  <img class ="wIcon" *ngIf="weatherImg[foreCastData.weather[0].main]" src="{{baseWeatherImgPath + weatherImg[foreCastData.weather[0].main]}}"></span>
+        <span style="margin-left:10px;">{{foreCastData.weather[0].main}}</span>
+        <span style="margin-left:10px;">Min: {{foreCastData.temp.min|round}}</span> <span>&#8451;</span>
+        <span style="margin-left:10px;">Max: {{foreCastData.temp.max|round}}</span> <span>&#8451;</span>
       </li>
     </ul>
   </div>

@@ -1,4 +1,4 @@
-<h4 class="title">Weather App</h4>
+<h4 class="title">My Weather App</h4>
 
 <div class="container-fluid">
   <form name="weatherForm" [formGroup]="weatherForm" (ngSubmit)="weatherForm.valid && onSubmit()">
@@ -18,17 +18,23 @@
     </div>
   </form>
 
-  <div *ngIf="isSpinner" class="spinner-border text-success" role="status">
-    <span class="sr-only">Loading...</span>
+  <div *ngIf="isSpinner" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
   </div>
-  <div *ngFor="let weatherData of weatherDataArray; let i = index">
+  <div *ngFor="let weatherData of weatherDataResults; let i = index">
     <div class="well flex">
       <div>
         <h3>{{weatherData.data.name}}</h3>
         <h4 *ngIf="weatherData">Current conditions: {{weatherData.data.weather[0].main}}</h4>
         <h4>Temperatures: {{weatherData.data.main.temp|round}} <span>&#8451;</span></h4>
+        <p>Feels Like: {{weatherData.data.main.feels_like|round}} <span>&#8451;</span></p>
+
         <p> Min Today: {{weatherData.data.main.temp_min|round}} <span>&#8451;</span></p>
         <p> Max Today: {{weatherData.data.main.temp_max|round}} <span>&#8451;</span></p>
+
+        <p>Humidity: {{weatherData.data.main.humidity}} %</p>
         <p>
           <a href="{{weatherData.forecastLink}}">Show 5-day forecast for {{weatherData.data.name}}</a>
         </p>
